@@ -2,9 +2,15 @@ import logging
 
 import coloredlogs
 
+# # Playing Othello
 from Coach import Coach
 from othello.OthelloGame import OthelloGame as Game
 from othello.pytorch.NNet import NNetWrapper as nn
+
+# from Coach import Coach
+# from quoridor.QuoridorGame import QuoridorGame
+# from quoridor.pytorch.NNet import NNetWrapper as nn
+
 from utils import *
 
 log = logging.getLogger(__name__)
@@ -32,6 +38,7 @@ args = dotdict({
 def main():
     log.info('Loading %s...', Game.__name__)
     g = Game(6)
+#     g = QuoridorGame()
 
     log.info('Loading %s...', nn.__name__)
     nnet = nn(g)

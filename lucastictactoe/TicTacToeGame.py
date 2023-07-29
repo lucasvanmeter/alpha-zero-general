@@ -2,21 +2,20 @@ from __future__ import print_function
 import sys
 sys.path.append('..')
 from Game import Game
-from .OthelloLogic import Board
+from .TicTacToeLogic import Board
 import numpy as np
 
-class OthelloGame(Game):
-    square_content = {
-        -1: "X",
-        +0: "-",
-        +1: "O"
-    }
+"""
+Game class implementation for the game of TicTacToe.
+Based on the OthelloGame then getGameEnded() was adapted to new rules.
 
-    @staticmethod
-    def getSquarePiece(piece):
-        return OthelloGame.square_content[piece]
+Author: Evgeny Tyurin, github.com/evg-tyurin
+Date: Jan 5, 2018.
 
-    def __init__(self, n):
+Based on the OthelloGame by Surag Nair.
+"""
+class TicTacToeGame(Game):
+    def __init__(self, n=3):
         self.n = n
 
     def getInitBoard(self):
@@ -35,9 +34,6 @@ class OthelloGame(Game):
     def getNextState(self, board, player, action):
         # if player takes action on board, return next (board,player)
         # action must be a valid move
-        """
-        
-        """
         if action == self.n*self.n:
             return (board, -player)
         b = Board(self.n)
@@ -64,13 +60,15 @@ class OthelloGame(Game):
         # player = 1
         b = Board(self.n)
         b.pieces = np.copy(board)
-        if b.has_legal_moves(player):
-            return 0
-        if b.has_legal_moves(-player):
-            return 0
-        if b.countDiff(player) > 0:
+
+        if b.is_win(player):
             return 1
-        return -1
+        if b.is_win(-player):
+            return -1
+        if b.has_legal_moves():
+            return 0
+        # draw has a very little value 
+        return 1e-4
 
     def getCanonicalForm(self, board, player):
         # return state if player==1, else return -state if player==-1
@@ -93,30 +91,35 @@ class OthelloGame(Game):
         return l
 
     def stringRepresentation(self, board):
+        # 8x8 numpy array (canonical board)
         return board.tostring()
-
-    def stringRepresentationReadable(self, board):
-        board_s = "".join(self.square_content[square] for row in board for square in row)
-        return board_s
-
-    def getScore(self, board, player):
-        b = Board(self.n)
-        b.pieces = np.copy(board)
-        return b.countDiff(player)
 
     @staticmethod
     def display(board):
         n = board.shape[0]
+
         print("   ", end="")
         for y in range(n):
-            print(y, end=" ")
+            print (y,"", end="")
         print("")
-        print("-----------------------")
+        print("  ", end="")
+        for _ in range(n):
+            print ("-", end="-")
+        print("--")
         for y in range(n):
-            print(y, "|", end="")    # print the row #
+            print(y, "|",end="")    # print the row #
             for x in range(n):
                 piece = board[y][x]    # get the piece to print
-                print(OthelloGame.square_content[piece], end=" ")
+                if piece == -1: print("X ",end="")
+                elif piece == 1: print("O ",end="")
+                else:
+                    if x==n:
+                        print("-",end="")
+                    else:
+                        print("- ",end="")
             print("|")
 
-        print("-----------------------")
+        print("  ", end="")
+        for _ in range(n):
+            print ("-", end="-")
+        print("--")

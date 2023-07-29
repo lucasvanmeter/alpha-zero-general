@@ -1,8 +1,8 @@
 import Arena
 from MCTS import MCTS
-from othello.OthelloGame import OthelloGame
-from othello.OthelloPlayers import *
-from othello.pytorch.NNet import NNetWrapper as NNet
+from quoridor.QuoridorGame import QuoridorGame
+# from quoridor.QuoridorPlayers import *
+from quoridor.pytorch.NNet import NNetWrapper as NNet
 
 
 import numpy as np
@@ -13,13 +13,15 @@ use this script to play any two agents against each other, or play manually with
 any agent.
 """
 
-mini_othello = False  # Play in 6x6 instead of the normal 8x8.
+# mini_othello = False  # Play in 6x6 instead of the normal 8x8.
 human_vs_cpu = True
 
-if mini_othello:
-    g = OthelloGame(6)
-else:
-    g = OthelloGame(8)
+# if mini_othello:
+#     g = OthelloGame(6)
+# else:
+#     g = OthelloGame(8)
+    
+g = QuoridorGame()
 
 # all players
 rp = RandomPlayer(g).play

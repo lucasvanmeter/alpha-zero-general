@@ -119,6 +119,7 @@ class MCTS():
                     best_act = a
 
         a = best_act
+        self.Vs[s][a] = 0 # To avoid infinite loops if we ever end up back at s we are not allowed to take the same action. 
         next_s, next_player = self.game.getNextState(canonicalBoard, 1, a)
         next_s = self.game.getCanonicalForm(next_s, next_player)
 

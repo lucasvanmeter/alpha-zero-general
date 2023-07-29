@@ -108,6 +108,7 @@ class Board():
         # print(move)
         flips = [flip for direction in self.__directions
                       for flip in self._get_flips(move, direction, color)]
+        print(flips)
         assert len(list(flips))>0
         for x, y in flips:
             #print(self[x][y],color)
